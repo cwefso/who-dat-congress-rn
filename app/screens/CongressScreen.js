@@ -30,8 +30,6 @@ const CongressScreen = () => {
       .catch(error => console.log('error', error));
   };
 
-  console.log(selectedMember)
-
   if(!selectedMember){
     return (
       <View>

@@ -7,6 +7,7 @@ const Card = ({ id, chamber }) => {
 	const [member, setMember] = useState({});
 	const [imageURL, setImageUrl] = useState("");
 	const [isFlipped, setIsFlipped] = useState(false);
+	const shortid = require("shortid");
 
 	useEffect(() => {
 		loadMember();
@@ -30,18 +31,25 @@ const Card = ({ id, chamber }) => {
 			.catch((error) => console.log("error", error));
 	};
 
-	let committees = <Text>Loading</Text>;
+	let committees = <Text style={styles.text}>Loading</Text>;
 	let leadership;
 
 	if (member.role) {
-		leadership = <Text>{member.roles[1].leadership_role}</Text>;
+		leadership = (
+			<Text style={styles.text}>{member.roles[1].leadership_role}</Text>
+		);
 	} else {
-		leadership = <Text>None</Text>;
+		leadership = <Text style={styles.text}>None</Text>;
 	}
 
 	if (member.roles) {
 		committees = member.roles[1].committees.map((committee) => {
-			return <Text> - {committee.name}</Text>;
+			return (
+				<Text style={styles.text} key={shortid()}>
+					{" "}
+					- {committee.name}
+				</Text>
+			);
 		});
 
 		if (isFlipped === false) {
@@ -52,7 +60,7 @@ const Card = ({ id, chamber }) => {
 							{/* CardFront Open */}
 							<Image
 								source={{ uri: imageURL }}
-								style={{ width: 200, height: 300 }}
+								style={styles.image}
 								alt="profile-Image"
 							/>
 							{/* CardFront Close */}
@@ -61,58 +69,83 @@ const Card = ({ id, chamber }) => {
 				</View>
 			);
 		} else if (isFlipped === true && chamber === "House") {
-				return (
-					<TouchableOpacity style={styles.card} onPress={handleFlip}>
-						<Text>
-							Name: Rep. {member.first_name} {member.last_name}
-						</Text>
-						<Text>Party: {member.roles[1].party}</Text>
-						<Text>
-							State: ({member.roles[1].state}-{member.roles[1].district})
-						</Text>
-						<Text>Leadership Role: {leadership}</Text>
-						<Text>Committees:</Text>
-						<View>{committees}</View>
-						<Text>
-							{/* <a
+			return (
+				<TouchableOpacity style={styles.card} onPress={handleFlip}>
+										<View style={styles.info}>
+
+					<Text style={styles.text}>
+						Name: Rep. {member.first_name} {member.last_name}
+					</Text>
+					<Text style={styles.text}>Party: {member.roles[1].party}</Text>
+					<Text style={styles.text}>
+						State: ({member.roles[1].state}-{member.roles[1].district})
+					</Text>
+					<Text style={styles.text}>Leadership Role: {leadership}</Text>
+					<Text style={styles.text}>Committees:</Text>
+					<View style={styles.committees}>{committees}</View>
+					<Text style={styles.text}>
+						{/* <a
 													href={`https://www.opensecrets.org/search?q=${member.first_name}+${member.last_name}&type=indiv`}
 													style={{ color: "white" }}
-												>
+													>
 													Open Secrets Search
 												</a> */}
-						</Text>
-					</TouchableOpacity>
-				);
-												}	else if (isFlipped === true && chamber === "Senate") {
-				return (
-					<TouchableOpacity style={styles.card} onPress={handleFlip}>
-						<Text>
-							Name: Sen. {member.first_name} {member.last_name}
-						</Text>
-						<Text>Party: {member.roles[1].party}</Text>
-						<Text>State: {member.roles[1].state}</Text>
-						<Text>Leadership Role: {leadership}</Text>
-						<Text>
-							Committees:
-							<View>{committees}</View>
-						</Text>
-					</TouchableOpacity>
-				);
-			}
-		} else {
-			console.log("Loading");
+					</Text>
+												</View>
+				</TouchableOpacity>
+			);
+		} else if (isFlipped === true && chamber === "Senate") {
 			return (
-				<View>
-					<Text>Loading...</Text>
-				</View>
+				<TouchableOpacity style={styles.card} onPress={handleFlip}>
+					<View style={styles.info}>
+
+					<Text style={styles.text}>
+						Name: Sen. {member.first_name} {member.last_name}
+					</Text>
+					<Text style={styles.text}>Party: {member.roles[1].party}</Text>
+					<Text style={styles.text}>State: {member.roles[1].state}</Text>
+					<Text style={styles.text}>Leadership Role: {leadership}</Text>
+					<Text style={styles.text}>Committees:</Text>
+					<View style={styles.committees}>{committees}</View>
+					</View>
+				</TouchableOpacity>
 			);
 		}
+	} else {
+		console.log("Loading");
+		return (
+			<View>
+				<Text style={styles.text}>Loading...</Text>
+			</View>
+		);
 	}
-;
-
+};
 export default Card;
 
 const styles = {
-	front: {},
-	back: {},
+	card: {
+		minWidth: 411,
+		minHeight: 731,
+		display: "flex",
+		flexDirection: "column",
+		justifyContent: "center",
+		top: -80,
+		right: -10,
+	},
+	text: {
+		color: "black",
+		fontSize: 20,
+	},
+	info: {
+		top: -120,
+	},
+	committees: {
+		left: 150,
+		width: 200,
+	},
+	image: {
+		right: -30,
+		width: 333, height: 500,
+		top: -15
+	}
 };

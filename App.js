@@ -32,6 +32,10 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: "lightblue",
 		alignItems: "center",
-		justifyContent: "center",
+    justifyContent: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+    width: '100%'
 	},
 });
