@@ -152,7 +152,7 @@ export default Card;
 
 const styles = StyleSheet.create({
 	card: {
-		minWidth: 411,
+		// minWidth: 411,
 		minHeight: 731,
 		// top: -80,
 		// right: -10,
@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		width: "100%",
 		justifyContent: "space-evenly",
-		top: "-70%",
+		top: "-72%",
 	},
 	buttonContainerInfo: {
 		display: "flex",

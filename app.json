@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "WhoDatReactNative",
-    "slug": "WhoDatReactNative",
+    "name": "Who Dat? Congress Edition",
+    "slug": "whodatcongress",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -27,6 +27,8 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": "This is a flashcard app to study members of the US House of Representatives and the US Senate. It uses information from ProPublica, the @unitedstates Project, and OpenSecrets.org.",
+    "githubUrl": "https://github.com/cwefso/who-dat-congress-rn"
   }
 }
