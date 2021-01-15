@@ -4,9 +4,9 @@
     "slug": "whodatcongress",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -21,12 +21,12 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#FFFFFF"
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/logo.png"
     },
     "description": "This is a flashcard app to study members of the US House of Representatives and the US Senate. It uses information from ProPublica, the @unitedstates Project, and OpenSecrets.org.",
     "githubUrl": "https://github.com/cwefso/who-dat-congress-rn"

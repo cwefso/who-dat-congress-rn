@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Image, TouchableOpacity, Linking } from "react-native";
+import { StyleSheet, Text, View, Image, TouchableOpacity, Linking, ScrollView } from "react-native";
 import CustomButton from "./CustomButton.js";
 import OpenSecretsButton from "./OpenSecretsButton.js";
 
@@ -43,8 +43,8 @@ const Card = ({ id, chamber, handleReset, navigation }) => {
 	}
 
 	if (member.roles) {
-		if(member.roles[1].committees !== undefined){
-			committees = member.roles[1].committees.map((committee) => {
+		if(!member.roles[1]){
+			committees = member.roles[0].committees.map((committee) => {
 				return (
 					<Text style={styles.committeeText} key={shortid()}>
 						{" "}
@@ -53,7 +53,7 @@ const Card = ({ id, chamber, handleReset, navigation }) => {
 				);
 			});
 		} else {
-			committees = member.roles[0].committees.map((committee) => {
+			committees = member.roles[1].committees.map((committee) => {
 				return (
 					<Text style={styles.committeeText} key={shortid()}>
 						{" "}
@@ -80,6 +80,7 @@ const Card = ({ id, chamber, handleReset, navigation }) => {
 					<CustomButton onPress={() => navigation.navigate("Home")} title="Home" />
 						<CustomButton
 							onPress={() => {
+								setIsFlipped(false)
 								handleReset()
 								loadMember()
 								setImageUrl(`https://theunitedstates.io/images/congress/450x550/${id}.jpg`)
@@ -95,7 +96,7 @@ const Card = ({ id, chamber, handleReset, navigation }) => {
 			<TouchableOpacity style={styles.card} onPress={handleFlip}>
 				<View style={styles.infoContainer}>
 					<View style={styles.titles}>
-						<Text style={styles.title}>Name</Text>
+						<Text style={styles.titleName}>Name</Text>
 						<Text style={styles.title}>State</Text>
 						<Text style={styles.title}>Party</Text>
 						<Text style={styles.title}>Leadership Role</Text>
@@ -104,7 +105,7 @@ const Card = ({ id, chamber, handleReset, navigation }) => {
 					<View style={styles.stats}>
 						{chamber === "House" && (
 							<View style={styles.stats}>
-								<Text style={styles.text}>
+								<Text style={styles.name}>
 									Rep. {member.first_name} {member.last_name}
 								</Text>
 
@@ -115,7 +116,7 @@ const Card = ({ id, chamber, handleReset, navigation }) => {
 						)}
 						{chamber === "Senate" && (
 							<View style={styles.stats}>
-								<Text style={styles.text}>
+								<Text style={styles.name}>
 									Sen. {member.first_name} {member.last_name}
 								</Text>
 								<Text style={styles.text}>{member.roles[0].state}</Text>
@@ -140,6 +141,7 @@ const Card = ({ id, chamber, handleReset, navigation }) => {
 					<CustomButton onPress={() => navigation.navigate("Home")} title="Home" />
 						<CustomButton
 							onPress={() => {
+								setIsFlipped(false)
 								handleReset()
 								loadMember()
 								setImageUrl(`https://theunitedstates.io/images/congress/450x550/${id}.jpg`)
@@ -179,6 +181,12 @@ const styles = StyleSheet.create({
 		color: "black",
 		fontSize: 20,
 	},
+	name: {
+		color: "black",
+		fontSize: 20,
+		minWidth: '10%',
+		height: 80
+	},
 	committeeText: {
 		color: "black",
 		fontSize: 20,
@@ -205,16 +213,23 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 		width: 350,
+		overflow: 'hidden'
 	},
 	image: {
-		width: 333,
-		height: 500,
+		width: '80%',
+		height: '60%',
 		top: "-18%",
 	},
 	title: {
 		color: "black",
 		fontSize: 20,
 		fontWeight: "bold",
+	},
+	titleName: {
+		color: "black",
+		fontSize: 20,
+		fontWeight: "bold",
+		height: 80
 	},
 	stats: {
 		display: "flex",
