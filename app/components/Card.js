@@ -1,26 +1,26 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-import CardFlip from "react-native-card-flip";
-// import Flippy, { FrontSide, BackSide } from "react-flippy";
+import React, { useState, useEffect } from "react"
+import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native"
+import CardFlip from "react-native-card-flip"
+// import Flippy, { FrontSide, BackSide } from "react-flippy"
 
 const Card = ({ id, chamber }) => {
-	const [member, setMember] = useState({});
-	const [imageURL, setImageUrl] = useState("");
-	const [isFlipped, setIsFlipped] = useState(false);
-	const shortid = require("shortid");
+	const [member, setMember] = useState({})
+	const [imageURL, setImageUrl] = useState("")
+	const [isFlipped, setIsFlipped] = useState(false)
+	const shortid = require("shortid")
 
 	useEffect(() => {
-		loadMember();
-		setImageUrl(`https://theunitedstates.io/images/congress/450x550/${id}.jpg`);
-	}, []);
+		loadMember()
+		setImageUrl(`https://theunitedstates.io/images/congress/450x550/${id}.jpg`)
+	}, [])
 
 	const handleFlip = () => {
-		isFlipped === false ? setIsFlipped(true) : setIsFlipped(false);
-	};
+		isFlipped === false ? setIsFlipped(true) : setIsFlipped(false)
+	}
 
 	const loadMember = () => {
-		var myHeaders = new Headers();
-		myHeaders.append("X-API-Key", "uFMDoeej59MBKmv2peA9Sxnt2bHEReqwp9blNDFG");
+		var myHeaders = new Headers()
+		myHeaders.append("X-API-Key", "uFMDoeej59MBKmv2peA9Sxnt2bHEReqwp9blNDFG")
 
 		fetch(`https://api.propublica.org/congress/v1/members/${id}.json`, {
 			method: "GET",
@@ -28,61 +28,97 @@ const Card = ({ id, chamber }) => {
 		})
 			.then((response) => response.json())
 			.then((result) => setMember(result.results[0]))
-			.catch((error) => console.log("error", error));
-	};
+			.catch((error) => console.log("error", error))
+	}
 
-	let committees = <Text style={styles.text}>Loading</Text>;
-	let leadership;
+	let committees = <Text style={styles.text}>Loading</Text>
+	let leadership
 
 	if (member.role) {
 		leadership = (
 			<Text style={styles.text}>{member.roles[1].leadership_role}</Text>
-		);
+		)
 	} else {
-		leadership = <Text style={styles.text}>None</Text>;
+		leadership = <Text style={styles.text}>None</Text>
 	}
 
 	if (member.roles) {
 		committees = member.roles[1].committees.map((committee) => {
 			return (
-				<Text style={styles.text} key={shortid()}>
+				<Text style={styles.committeeText} key={shortid()}>
 					{" "}
-					- {committee.name}
+					{committee.name}
 				</Text>
-			);
-		});
+			)
+		})
+	}
 
-		if (isFlipped === false) {
-			return (
-				<View className="App-header">
-					<View>
-						<TouchableOpacity style={styles.card} onPress={handleFlip}>
-							{/* CardFront Open */}
-							<Image
-								source={{ uri: imageURL }}
-								style={styles.image}
-								alt="profile-Image"
-							/>
-							{/* CardFront Close */}
-						</TouchableOpacity>
-					</View>
+	if (isFlipped === false) {
+		return (
+			<View className="App-header">
+				<View>
+					<TouchableOpacity style={styles.card} onPress={handleFlip}>
+						{/* CardFront Open */}
+						<View style={styles.imageContainer}>
+						<Image
+							source={{ uri: imageURL }}
+							style={styles.image}
+							alt="profile-Image"
+						/>
+						</View>
+						{/* CardFront Close */}
+					</TouchableOpacity>
 				</View>
-			);
-		} else if (isFlipped === true && chamber === "House") {
-			return (
-				<TouchableOpacity style={styles.card} onPress={handleFlip}>
-										<View style={styles.info}>
+			</View>
+		)
+	} else if (isFlipped === true) {
+		return (
+			<TouchableOpacity style={styles.card} onPress={handleFlip}>
+				<View>
+					{chamber === "House" && (
+						<View style={styles.info}>
+							<Text style={styles.title}>
+								Name
+							</Text>
+							<Text style={styles.text}>
+								Rep. {member.first_name} {member.last_name}
+							</Text>
+							<Text style={styles.title}>
+								State
+							</Text>
+							<Text style={styles.text}>
+								{member.roles[1].state}-{member.roles[1].district}
+							</Text>
+						</View>
+					)}
+					{chamber === "Senate" && (
+						<View>
+							<Text style={styles.title}>
+								Name
+							</Text>
+							<Text style={styles.text}>
+								Sen. {member.first_name} {member.last_name}
+							</Text>
+							<Text style={styles.title}>State</Text>
+							<Text style={styles.text}>{member.roles[1].state}</Text>
+						</View>
+					)}
+					<View style={styles.info}>
 
+						<Text style={styles.title}>Party</Text>
 					<Text style={styles.text}>
-						Name: Rep. {member.first_name} {member.last_name}
+						{member.roles[1].party === "D" ?
+							"Democrat"
+						 : 
+							"Republican"
+						}
 					</Text>
-					<Text style={styles.text}>Party: {member.roles[1].party}</Text>
-					<Text style={styles.text}>
-						State: ({member.roles[1].state}-{member.roles[1].district})
-					</Text>
-					<Text style={styles.text}>Leadership Role: {leadership}</Text>
-					<Text style={styles.text}>Committees:</Text>
-					<View style={styles.committees}>{committees}</View>
+					<Text style={styles.title}>Leadership Role</Text>
+					<Text style={styles.text}>{leadership}</Text>
+					<View style={styles.committees}>
+					<Text style={styles.title}>Committees</Text>
+						{committees}
+					</View>
 					<Text style={styles.text}>
 						{/* <a
 													href={`https://www.opensecrets.org/search?q=${member.first_name}+${member.last_name}&type=indiv`}
@@ -92,60 +128,73 @@ const Card = ({ id, chamber }) => {
 												</a> */}
 					</Text>
 												</View>
-				</TouchableOpacity>
-			);
-		} else if (isFlipped === true && chamber === "Senate") {
-			return (
-				<TouchableOpacity style={styles.card} onPress={handleFlip}>
-					<View style={styles.info}>
-
-					<Text style={styles.text}>
-						Name: Sen. {member.first_name} {member.last_name}
-					</Text>
-					<Text style={styles.text}>Party: {member.roles[1].party}</Text>
-					<Text style={styles.text}>State: {member.roles[1].state}</Text>
-					<Text style={styles.text}>Leadership Role: {leadership}</Text>
-					<Text style={styles.text}>Committees:</Text>
-					<View style={styles.committees}>{committees}</View>
-					</View>
-				</TouchableOpacity>
-			);
-		}
+				</View>
+			</TouchableOpacity>
+		)
 	} else {
-		console.log("Loading");
 		return (
 			<View>
 				<Text style={styles.text}>Loading...</Text>
 			</View>
-		);
+		)
 	}
-};
-export default Card;
+}
+export default Card
 
 const styles = {
 	card: {
 		minWidth: 411,
 		minHeight: 731,
+		// top: -80,
+		// right: -10,
+	},
+	imageContainer: {		
 		display: "flex",
 		flexDirection: "column",
 		justifyContent: "center",
-		top: -80,
-		right: -10,
+		alignItems: 'center',
+		width: '100%',
+		height: '100%'
 	},
 	text: {
 		color: "black",
+		fontSize: 30,
+		textDecorationLine: 'underline',
+	},
+	committeeText: {
+		color: "black",
 		fontSize: 20,
+		textAlign: 'center'
 	},
 	info: {
-		top: -120,
+		top: "15%",
+		display: 'flex',
+		flexDirection: 'column',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+
 	},
 	committees: {
-		left: 150,
-		width: 200,
+		bottom: '-30%',
+		display: 'flex',
+		flexDirection: 'column',
+		justifyContent: 'center',
+		alignItems: 'center',
+		// left: 150,
+		width: 350,
 	},
 	image: {
-		right: -30,
-		width: 333, height: 500,
-		top: -15
+		width: 333,
+		height: 500,
+		top: "-10%"
+	},
+	title: {
+		color: "black",
+		fontSize: 20,
+		fontWeight: 'bold',
+    // fontStyle: 'italic',
 	}
-};
+}
+
+// { color: #e8d4a7 text-decoration: none text-align: right padding: 15px font-size: 20px }
+// h2 { font-size: 30px letter-spacing: -1px color: #DFBF84 text-transform: uppercase text-shadow: 1px 1px 0 #000, margin: 10px 0 24px text-align: center line-height: 50px }

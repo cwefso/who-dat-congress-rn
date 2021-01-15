@@ -33,7 +33,7 @@ const CongressScreen = () => {
   if(!selectedMember){
     return (
       <View>
-        <Text>Loading...</Text>
+        {/* <Text>Loading...</Text> */}
       </View>
     )
   } else {
