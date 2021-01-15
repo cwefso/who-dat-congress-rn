@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image } from "react-native";
+import { View } from "react-native";
 import React, { useState, useEffect } from "react";
 import Card from "/Users/cwefso/projects/WhoDatReactNative/app/components/Card.js";
 import shuffle from "shuffle-array";

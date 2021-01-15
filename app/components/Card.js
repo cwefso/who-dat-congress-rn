@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, Image, TouchableOpacity, Linking } from "react-native";
 import CustomButton from "/Users/cwefso/projects/WhoDatReactNative/app/components/CustomButton.js";
+import OpenSecretsButton from "/Users/cwefso/projects/WhoDatReactNative/app/components/OpenSecretsButton.js";
 
 const Card = ({ id, chamber, handleReset, navigation }) => {
 	const [member, setMember] = useState({});
@@ -12,12 +13,6 @@ const Card = ({ id, chamber, handleReset, navigation }) => {
 		loadMember();
 		setImageUrl(`https://theunitedstates.io/images/congress/450x550/${id}.jpg`);
 	}, []);
-
-	// const handleReset = () => {
-	// 	loadMember();
-	// 	setImageUrl(`https://theunitedstates.io/images/congress/450x550/${id}.jpg`);
-	// 	console.log(member)
-	// }
 
 	const handleFlip = () => {
 		isFlipped === false ? setIsFlipped(true) : setIsFlipped(false);
@@ -41,14 +36,14 @@ const Card = ({ id, chamber, handleReset, navigation }) => {
 
 	if (member.role) {
 		leadership = (
-			<Text style={styles.text}>{member.roles[1].leadership_role}</Text>
+			<Text style={styles.text}>{member.roles[0].leadership_role}</Text>
 		);
 	} else {
 		leadership = <Text style={styles.text}>None</Text>;
 	}
 
 	if (member.roles) {
-		committees = member.roles[0].committees.map((committee) => {
+		committees = member.roles[1].committees.map((committee) => {
 			return (
 				<Text style={styles.committeeText} key={shortid()}>
 					{" "}
@@ -87,6 +82,7 @@ const Card = ({ id, chamber, handleReset, navigation }) => {
 		);
 	} else if (isFlipped === true) {
 		return (
+			<View>
 			<TouchableOpacity style={styles.card} onPress={handleFlip}>
 				<View style={styles.infoContainer}>
 					<View style={styles.titles}>
@@ -121,21 +117,28 @@ const Card = ({ id, chamber, handleReset, navigation }) => {
 						</Text>
 
 						<Text style={styles.text}>{leadership}</Text>
-						<Text style={styles.text}>
-							{/* <a
-													href={`https://www.opensecrets.org/search?q=${member.first_name}+${member.last_name}&type=indiv`}
-													style={{ color: "white" }}
-													>
-													Open Secrets Search
-												</a> */}
-						</Text>
 					</View>
+				</View>
+				<View style={styles.openSecrets}>
+				<OpenSecretsButton  onPress={() => Linking.openURL(`https://www.opensecrets.org/search?q=${member.first_name}+${member.last_name}&type=indiv`)} title="Open Secrets" />
 				</View>
 				<View style={styles.committees}>
 					<Text style={styles.title}>Committees</Text>
 					{committees}
 				</View>
 			</TouchableOpacity>
+				<View style={styles.buttonContainerInfo}>
+					<CustomButton onPress={() => navigation.navigate("Home")} title="Home" />
+						<CustomButton
+							onPress={() => {
+								handleReset()
+								loadMember()
+								setImageUrl(`https://theunitedstates.io/images/congress/450x550/${id}.jpg`)
+							}}
+							title="Next"
+						/>
+				</View>
+			</View>
 		);
 	} else {
 		return (
@@ -147,7 +150,7 @@ const Card = ({ id, chamber, handleReset, navigation }) => {
 };
 export default Card;
 
-const styles = {
+const styles = StyleSheet.create({
 	card: {
 		minWidth: 411,
 		minHeight: 731,
@@ -225,7 +228,15 @@ const styles = {
 		justifyContent: "space-evenly",
 		top: "-70%",
 	},
-};
-
-// { color: #e8d4a7 text-decoration: none text-align: right padding: 15px font-size: 20px }
-// h2 { font-size: 30px letter-spacing: -1px color: #DFBF84 text-transform: uppercase text-shadow: 1px 1px 0 #000, margin: 10px 0 24px text-align: center line-height: 50px }
+	buttonContainerInfo: {
+		display: "flex",
+		flexDirection: "row",
+		width: "100%",
+		justifyContent: "space-evenly",
+		top: "-48.25%",
+	},
+	openSecrets: {
+		width: '60%',
+		top: "-15%",
+	}
+});

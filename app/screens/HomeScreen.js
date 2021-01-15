@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, Image, Button } from "react-native";
+import { StyleSheet, View, Image } from "react-native";
 import CustomButton from "/Users/cwefso/projects/WhoDatReactNative/app/components/CustomButton.js";
 
 const HomeScreen = ({ navigation }) => {

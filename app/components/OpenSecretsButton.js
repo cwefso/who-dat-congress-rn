@@ -1,18 +1,18 @@
 import React from "react";
 import { StyleSheet, TouchableOpacity, Text } from "react-native";
 
-const CustomButton = ({ onPress, title }) => (
+const OpenSecretsButton = ({ onPress, title }) => (
 	<TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
 		<Text style={styles.appButtonText}>{title}</Text>
 	</TouchableOpacity>
 );
 
-export default CustomButton;
+export default OpenSecretsButton;
 
 const styles = StyleSheet.create({
 	appButtonContainer: {
 		elevation: 8,
-		backgroundColor: "#003B87",
+		backgroundColor: "#800020",
 		borderRadius: 10,
 		paddingVertical: 10,
     paddingHorizontal: 12,
