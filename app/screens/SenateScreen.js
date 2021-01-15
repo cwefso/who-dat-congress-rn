@@ -3,7 +3,7 @@ import Card from "/Users/cwefso/projects/WhoDatReactNative/app/components/Card.j
 import shuffle from "shuffle-array";
 import { StyleSheet, Text, View, Image, Button } from "react-native";
 
-const SenateScreen = () => {
+const SenateScreen = ({navigation}) => {
   const [allMembers, setAllMembers] = useState([])
   const [selectedMember, setSelectedMember] = useState({})
 
@@ -15,7 +15,12 @@ const SenateScreen = () => {
     if(allMembers){
       setSelectedMember(shuffle.pick(allMembers))
     }
-	},[allMembers])
+  },[allMembers])
+  
+  const handleReset = () => {
+    setSelectedMember(shuffle.pick(allMembers))
+    console.log(selectedMember)
+  }
 
   const loadMembers = () => {
     var myHeaders = new Headers();
@@ -40,7 +45,7 @@ const SenateScreen = () => {
 
     return (
       <View>
-      <Card id={selectedMember.id} chamber={"Senate"}/>
+      <Card id={selectedMember.id} chamber={"Senate"} handleReset={handleReset} navigation={navigation}/>
 		</View>
 	);
 }

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Card from "/Users/cwefso/projects/WhoDatReactNative/app/components/Card.js";
 import shuffle from "shuffle-array";
 
-const CongressScreen = () => {
+const CongressScreen = ({navigation}) => {
   const [allMembers, setAllMembers] = useState([])
   const [selectedMember, setSelectedMember] = useState({})
 
@@ -15,7 +15,12 @@ const CongressScreen = () => {
     if(allMembers){
       setSelectedMember(shuffle.pick(allMembers))
     }
-	},[allMembers])
+  },[allMembers])
+  
+  const handleReset = () => {
+    setSelectedMember(shuffle.pick(allMembers))
+    console.log(selectedMember)
+  }
 
   const loadMembers = () => {
     var myHeaders = new Headers();
@@ -40,7 +45,7 @@ const CongressScreen = () => {
 
     return (
       <View>
-      <Card id={selectedMember.id} chamber={"House"}/>
+      <Card id={selectedMember.id} chamber={"House"} handleReset={handleReset} navigation={navigation}/>
 		</View>
 	);
 }
