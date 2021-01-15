@@ -19,7 +19,6 @@ const CongressScreen = ({navigation}) => {
   
   const handleReset = () => {
     setSelectedMember(shuffle.pick(allMembers))
-    console.log(selectedMember)
   }
 
   const loadMembers = () => {

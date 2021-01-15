@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Card from "/Users/cwefso/projects/WhoDatReactNative/app/components/Card.js";
 import shuffle from "shuffle-array";
-import { StyleSheet, Text, View, Image, Button } from "react-native";
+import { Text, View} from "react-native";
 
 const SenateScreen = ({navigation}) => {
   const [allMembers, setAllMembers] = useState([])
@@ -19,7 +19,6 @@ const SenateScreen = ({navigation}) => {
   
   const handleReset = () => {
     setSelectedMember(shuffle.pick(allMembers))
-    console.log(selectedMember)
   }
 
   const loadMembers = () => {

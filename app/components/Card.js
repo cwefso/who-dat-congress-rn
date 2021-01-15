@@ -43,21 +43,31 @@ const Card = ({ id, chamber, handleReset, navigation }) => {
 	}
 
 	if (member.roles) {
-		committees = member.roles[1].committees.map((committee) => {
-			return (
-				<Text style={styles.committeeText} key={shortid()}>
-					{" "}
-					{committee.name}
-				</Text>
-			);
-		});
+		if(member.roles[1].committees !== undefined){
+			committees = member.roles[1].committees.map((committee) => {
+				return (
+					<Text style={styles.committeeText} key={shortid()}>
+						{" "}
+						{committee.name}
+					</Text>
+				);
+			});
+		} else {
+			committees = member.roles[0].committees.map((committee) => {
+				return (
+					<Text style={styles.committeeText} key={shortid()}>
+						{" "}
+						{committee.name}
+					</Text>
+				);
+			});
+		}
 	}
 
 	if (isFlipped === false) {
 		return (
 			<View>
 				<TouchableOpacity style={styles.card} onPress={handleFlip}>
-					{/* CardFront Open */}
 					<View style={styles.imageContainer}>
 						<Image
 							source={{ uri: imageURL }}
@@ -65,7 +75,6 @@ const Card = ({ id, chamber, handleReset, navigation }) => {
 							alt="profile-Image"
 						/>
 					</View>
-					{/* CardFront Close */}
 				</TouchableOpacity>
 				<View style={styles.buttonContainer}>
 					<CustomButton onPress={() => navigation.navigate("Home")} title="Home" />
@@ -100,7 +109,7 @@ const Card = ({ id, chamber, handleReset, navigation }) => {
 								</Text>
 
 								<Text style={styles.text}>
-									{member.roles[1].state}-{member.roles[1].district}
+									{member.roles[0].state}-{member.roles[0].district}
 								</Text>
 							</View>
 						)}
@@ -109,11 +118,11 @@ const Card = ({ id, chamber, handleReset, navigation }) => {
 								<Text style={styles.text}>
 									Sen. {member.first_name} {member.last_name}
 								</Text>
-								<Text style={styles.text}>{member.roles[1].state}</Text>
+								<Text style={styles.text}>{member.roles[0].state}</Text>
 							</View>
 						)}
 						<Text style={styles.text}>
-							{member.roles[1].party === "D" ? "Democrat" : "Republican"}
+							{member.roles[0].party === "D" ? "Democrat" : "Republican"}
 						</Text>
 
 						<Text style={styles.text}>{leadership}</Text>
@@ -152,10 +161,7 @@ export default Card;
 
 const styles = StyleSheet.create({
 	card: {
-		// minWidth: 411,
 		minHeight: 731,
-		// top: -80,
-		// right: -10,
 		display: "flex",
 		flexDirection: "column",
 		justifyContent: "center",
@@ -172,7 +178,6 @@ const styles = StyleSheet.create({
 	text: {
 		color: "black",
 		fontSize: 20,
-		// textDecorationLine: 'underline',
 	},
 	committeeText: {
 		color: "black",
@@ -181,7 +186,6 @@ const styles = StyleSheet.create({
 		marginTop: 5,
 	},
 	info: {
-		// top: "15%",
 		display: "flex",
 		flexDirection: "column",
 		justifyContent: "space-between",
@@ -193,7 +197,6 @@ const styles = StyleSheet.create({
 		justifyContent: "space-between",
 		top: "-40%",
 		width: 333,
-		// alignItems: 'center',
 	},
 	committees: {
 		bottom: "10%",
@@ -201,7 +204,6 @@ const styles = StyleSheet.create({
 		flexDirection: "column",
 		justifyContent: "center",
 		alignItems: "center",
-		// left: 150,
 		width: 350,
 	},
 	image: {
@@ -213,7 +215,6 @@ const styles = StyleSheet.create({
 		color: "black",
 		fontSize: 20,
 		fontWeight: "bold",
-		// fontStyle: 'italic',
 	},
 	stats: {
 		display: "flex",
@@ -233,7 +234,7 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		width: "100%",
 		justifyContent: "space-evenly",
-		top: "-48.25%",
+		top: "-50%",
 	},
 	openSecrets: {
 		width: '60%',
