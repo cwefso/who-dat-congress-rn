@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity, Linking } from "react-native";
-import CustomButton from "/Users/cwefso/projects/WhoDatReactNative/app/components/CustomButton.js";
-import OpenSecretsButton from "/Users/cwefso/projects/WhoDatReactNative/app/components/OpenSecretsButton.js";
+import CustomButton from "./CustomButton.js";
+import OpenSecretsButton from "./OpenSecretsButton.js";
 
 const Card = ({ id, chamber, handleReset, navigation }) => {
 	const [member, setMember] = useState({});
