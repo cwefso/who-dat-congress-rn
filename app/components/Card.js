@@ -5,7 +5,7 @@ import CardFlip from "react-native-card-flip"
 
 const Card = ({ id, chamber }) => {
 	const [member, setMember] = useState({})
-	const [imageURL, setImageUrl] = useState("")
+	const [imageURL, setImageUrl] = useState("none")
 	const [isFlipped, setIsFlipped] = useState(false)
 	const shortid = require("shortid")
 
@@ -74,38 +74,38 @@ const Card = ({ id, chamber }) => {
 	} else if (isFlipped === true) {
 		return (
 			<TouchableOpacity style={styles.card} onPress={handleFlip}>
-				<View>
-					{chamber === "House" && (
-						<View style={styles.info}>
-							<Text style={styles.title}>
+				<View style={styles.infoContainer}>
+					<View style={styles.titles}>
+					<Text style={styles.title}>
 								Name
-							</Text>
+					</Text>
+					<Text style={styles.title}>
+								State
+					</Text>
+					<Text style={styles.title}>Party</Text>
+					<Text style={styles.title}>Leadership Role</Text>
+					</View>
+
+					<View style={styles.stats}>
+					{chamber === "House" && (
+						<View style={styles.stats}>
 							<Text style={styles.text}>
 								Rep. {member.first_name} {member.last_name}
 							</Text>
-							<Text style={styles.title}>
-								State
-							</Text>
+
 							<Text style={styles.text}>
 								{member.roles[1].state}-{member.roles[1].district}
 							</Text>
 						</View>
 					)}
 					{chamber === "Senate" && (
-						<View>
-							<Text style={styles.title}>
-								Name
-							</Text>
+						<View style={styles.stats}>
 							<Text style={styles.text}>
 								Sen. {member.first_name} {member.last_name}
 							</Text>
-							<Text style={styles.title}>State</Text>
 							<Text style={styles.text}>{member.roles[1].state}</Text>
 						</View>
 					)}
-					<View style={styles.info}>
-
-						<Text style={styles.title}>Party</Text>
 					<Text style={styles.text}>
 						{member.roles[1].party === "D" ?
 							"Democrat"
@@ -113,12 +113,8 @@ const Card = ({ id, chamber }) => {
 							"Republican"
 						}
 					</Text>
-					<Text style={styles.title}>Leadership Role</Text>
+
 					<Text style={styles.text}>{leadership}</Text>
-					<View style={styles.committees}>
-					<Text style={styles.title}>Committees</Text>
-						{committees}
-					</View>
 					<Text style={styles.text}>
 						{/* <a
 													href={`https://www.opensecrets.org/search?q=${member.first_name}+${member.last_name}&type=indiv`}
@@ -127,8 +123,12 @@ const Card = ({ id, chamber }) => {
 													Open Secrets Search
 												</a> */}
 					</Text>
-												</View>
+					</View>
 				</View>
+												<View style={styles.committees}>
+												<Text style={styles.title}>Committees</Text>
+													{committees}
+												</View>
 			</TouchableOpacity>
 		)
 	} else {
@@ -147,6 +147,10 @@ const styles = {
 		minHeight: 731,
 		// top: -80,
 		// right: -10,
+		display: "flex",
+		flexDirection: "column",
+		justifyContent: "center",
+		alignItems: 'center',
 	},
 	imageContainer: {		
 		display: "flex",
@@ -158,8 +162,8 @@ const styles = {
 	},
 	text: {
 		color: "black",
-		fontSize: 30,
-		textDecorationLine: 'underline',
+		fontSize: 20,
+		// textDecorationLine: 'underline',
 	},
 	committeeText: {
 		color: "black",
@@ -167,15 +171,22 @@ const styles = {
 		textAlign: 'center'
 	},
 	info: {
-		top: "15%",
+		// top: "15%",
 		display: 'flex',
 		flexDirection: 'column',
 		justifyContent: 'space-between',
 		alignItems: 'center',
 
 	},
+	infoContainer: {
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		top: "-40%",
+		// alignItems: 'center',
+	},
 	committees: {
-		bottom: '-30%',
+		bottom: '10%',
 		display: 'flex',
 		flexDirection: 'column',
 		justifyContent: 'center',
@@ -193,6 +204,12 @@ const styles = {
 		fontSize: 20,
 		fontWeight: 'bold',
     // fontStyle: 'italic',
+	},
+	stats: {
+		display: 'flex',
+		flexDirection: 'column',
+		justifyContent: 'center',
+		alignItems: 'flex-end',
 	}
 }
 

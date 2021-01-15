@@ -21,7 +21,7 @@ const SenateScreen = () => {
     var myHeaders = new Headers();
     myHeaders.append("X-API-Key", "uFMDoeej59MBKmv2peA9Sxnt2bHEReqwp9blNDFG");
     
-    fetch("https://api.propublica.org/congress/v1/116/Senate/members.json", {
+    fetch("https://api.propublica.org/congress/v1/117/Senate/members.json", {
       method: 'GET',
       headers: myHeaders
     })
